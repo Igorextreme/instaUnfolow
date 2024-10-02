@@ -34,12 +34,20 @@ def find_non_followers(followers, followees):
 # Função para deixar de seguir usuários que não te seguem de volta
 def unfollow_non_followers(L, non_followers, limit=15):
     session = requests.Session()
+    
+    # Definindo o User-Agent para simular um iPhone
+    MOBILE_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1'
     cookies = {cookie.name: cookie.value for cookie in L.context._session.cookies}
 
+    # Atualize os cabeçalhos para simular um dispositivo móvel
     session.headers.update({
-        'User-Agent': 'Instagram 155.0.0.37.107',
+        'User-Agent': MOBILE_USER_AGENT,
         'Referer': 'https://www.instagram.com/',
         'x-csrftoken': cookies['csrftoken'],
+        'Origin': 'https://www.instagram.com',
+        'Accept': '*/*',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Connection': 'keep-alive',
     })
     session.cookies.update(cookies)
 
@@ -53,7 +61,7 @@ def unfollow_non_followers(L, non_followers, limit=15):
             if response.status_code == 200:
                 unfollowed_users.append(user.username)
                 count += 1
-                time.sleep(random.uniform(3, 6))  # Delay entre as requisições
+                time.sleep(random.uniform(3, 6))  # Delay aleatório para simular comportamento humano
             else:
                 print(f"Erro ao deixar de seguir {user.username}: {response.status_code}")
         except Exception as e:
@@ -109,4 +117,4 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)  # Altere para a porta correta conforme necessário
+    app.run(host='0.0.0.0', port=5000, debug=True)

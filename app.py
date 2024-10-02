@@ -51,6 +51,14 @@ def unfollow_non_followers(L, non_followers, limit=15):
     })
     session.cookies.update(cookies)
 
+    # Configurando o proxy
+    proxy = {
+        'http': 'http://93.171.164.251:8080',
+        'https': 'http://93.171.164.251:8080',
+    }
+    
+    session.proxies.update(proxy)  # Adicionando o proxy à sessão
+
     count = 0
     unfollowed_users = []
     for user in non_followers:

@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, jsonify, Response
+from flask import Flask, render_template, request, Response
 import instaloader
-import requests  # Adicionada a importação do requests
+import requests
 import time
 import random
 
@@ -58,7 +58,7 @@ def unfollow_non_followers(L, non_followers, limit=15):
                 print(f"Erro ao deixar de seguir {user.username}: {response.status_code}")
         except Exception as e:
             print(f"Erro ao deixar de seguir {user.username}: {e}")
-    
+
     return unfollowed_users
 
 # Função para enviar atualizações de status para o frontend
@@ -109,4 +109,4 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)    
+    app.run(host='0.0.0.0', port=5000, debug=True)  # Altere para a porta correta conforme necessário
